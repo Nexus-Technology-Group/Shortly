@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Shortly.Link.BLL.Implementation</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Shortly.Link.BLL.Abstractions\Shortly.Link.BLL.Abstractions.csproj" />
+      <ProjectReference Include="..\Shortly.Link.DAL.Abstractions\Shortly.Link.DAL.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>
