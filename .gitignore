@@ -7,3 +7,5 @@ bin/
 obj/
 
 .sonarqube/
+
+Shortly.Authorization.Domain/Utils/Hasher.cs
