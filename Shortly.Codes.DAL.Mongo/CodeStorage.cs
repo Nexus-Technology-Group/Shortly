@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using Shortly.Codes.Application.DTOs;
+using Shortly.Codes.Application.Exceptions;
 using Shortly.Codes.Application.Utils;
 using Shortly.Codes.DAL.Abstractions;
 using Shortly.Codes.DAL.Abstractions.Requests;
@@ -46,9 +47,13 @@ public class CodeStorage : ICodeStorage
     {
         var filter = Builders<Code>.Filter.Eq(x => x.Value, value);
         
-        var code = await _codeCollection.Find(filter)
+        var code = await _codeCollection
+            .Find(filter)
             .FirstOrDefaultAsync(cancellationToken);
 
+        if (code == null)
+            throw new CodeNotFoundException(CodeNotFoundException.MESSAGE);
+        
         return code?.Map();
     }
 
@@ -58,7 +63,9 @@ public class CodeStorage : ICodeStorage
             Builders<Code>.Filter.Eq(x => x.Email, request.Email),
             Builders<Code>.Filter.Eq(x => x.Type, request.Type));
         
-        var code = await _codeCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
+        var code = await _codeCollection
+            .Find(filter)
+            .FirstOrDefaultAsync(cancellationToken);
 
         return code?.Map();
     }
