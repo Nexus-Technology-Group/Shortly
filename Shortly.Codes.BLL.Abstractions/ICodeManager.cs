@@ -5,11 +5,11 @@ namespace Shortly.Codes.BLL.Abstractions;
 
 public interface ICodeManager
 {
-    Task<CodeDTO> CreateAccountConfirmationCode(string email, CancellationToken cancellationToken);
+    Task<CodeDTO> CreateAccountConfirmation(string email, CancellationToken cancellationToken);
     
-    Task<CodeDTO> CreatePasswordRecoveryCode(string email, CancellationToken cancellationToken);
+    Task<CodeDTO> CreatePasswordRecovery(string email, CancellationToken cancellationToken);
     
-    Task RemoveCodeAsync(Guid id, CancellationToken cancellationToken);
+    Task RemoveAsync(Guid id, CancellationToken cancellationToken);
     
-    Task RemoveCodeAsync(RemoveCodeRequest request, CancellationToken cancellationToken);
+    Task RemoveAsync(ManagerRemoveCodeRequest request, CancellationToken cancellationToken);
 }

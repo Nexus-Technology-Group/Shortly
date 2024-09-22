@@ -4,8 +4,8 @@ namespace Shortly.Codes.Application.Exceptions;
 
 public class CodeIsNotValidException : HttpRequestException
 {
-    public const string MESSAGE = "error.code.is.not.valid";
-    public CodeIsNotValidException(string messsage) : base(messsage, null, HttpStatusCode.Conflict)
+    public const string MESSAGE = "error.invalid.code";
+    public CodeIsNotValidException(string messsage) : base(messsage, null, HttpStatusCode.BadRequest)
     {
         
     }
