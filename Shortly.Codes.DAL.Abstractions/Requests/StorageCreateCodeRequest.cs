@@ -2,4 +2,4 @@
 
 namespace Shortly.Codes.DAL.Abstractions.Requests;
 
-public sealed record StorageCreateCodeRequest(string Email, CodeType Type, DateTime ExpiredDate);
+public sealed record StorageCreateCodeRequest(string Email, string Value, CodeType Type, DateTime ExpiredDate);

@@ -14,4 +14,6 @@ public interface ICodeStorage
     Task RemoveByIdAsync(Guid id, CancellationToken cancellationToken);
     
     Task RemoveByPayload(StorageRemoveByPayloadRequest request, CancellationToken cancellationToken);
+
+    Task<long> DeleteExpiredCodes();
 }

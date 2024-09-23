@@ -1,31 +1,26 @@
 ﻿using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
-using Shortly.Codes.Domain.Entities;
+using Shortly.Codes.DAL.Abstractions;
 
 namespace Shortly.Codes.DAL.Mongo.BackgroundJobs;
 
 public class CodeCleanerJob
 {
-    private readonly IMongoCollection<Code> _codeCollection;
+    private readonly ICodeStorage _codeStorage;
     private readonly ILogger<CodeCleanerJob> _logger;
 
-    public CodeCleanerJob(IMongoCollection<Code> codeCollection, ILogger<CodeCleanerJob> logger)
+    public CodeCleanerJob(ILogger<CodeCleanerJob> logger, ICodeStorage codeStorage)
     {
-        _codeCollection = codeCollection;
         _logger = logger;
+        _codeStorage = codeStorage;
     }
     
     public async Task CleanInactiveCodes()
     {
         try
         {
-            var filter = Builders<Code>
-                .Filter
-                .Lt(x => x.ExpiredDate, DateTime.UtcNow);
+            var deletedCount = await _codeStorage.DeleteExpiredCodes();
             
-            var result = await _codeCollection.DeleteManyAsync(filter);
-            
-            _logger.LogInformation("{DeletedCount} неактивных кодов было удалено.", result.DeletedCount);
+            _logger.LogInformation("{DeletedCount} неактивных кодов было удалено.", deletedCount);
         }
         catch (Exception ex)
         {

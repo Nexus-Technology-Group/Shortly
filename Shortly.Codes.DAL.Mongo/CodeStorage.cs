@@ -32,7 +32,7 @@ public class CodeStorage : ICodeStorage
         var code = new Code()
         {
             Type = request.Type,
-            Value = CodeGenerator.Generate(),
+            Value = request.Value,
             Email = request.Email,
             CreateDate = DateTime.UtcNow,
             ExpiredDate = request.ExpiredDate
@@ -54,7 +54,7 @@ public class CodeStorage : ICodeStorage
         if (code == null)
             throw new CodeNotFoundException(CodeNotFoundException.MESSAGE);
         
-        return code?.Map();
+        return code.Map();
     }
 
     public async Task<CodeDTO?> GetCodeByTypeAsync(StorageGetCodeByTypeRequest request, CancellationToken cancellationToken)
@@ -85,5 +85,16 @@ public class CodeStorage : ICodeStorage
             Builders<Code>.Filter.Eq(x => x.Value, request.Value));
         
         await _codeCollection.DeleteOneAsync(filter, cancellationToken);
+    }
+
+    public async Task<long> DeleteExpiredCodes()
+    {
+        var filter = Builders<Code>
+            .Filter
+            .Lt(x => x.ExpiredDate, DateTime.UtcNow);
+            
+        var result = await _codeCollection.DeleteManyAsync(filter);
+
+        return result.DeletedCount;
     }
 }

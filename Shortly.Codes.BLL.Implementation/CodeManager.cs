@@ -1,7 +1,9 @@
-﻿using Shortly.Codes.Application;
+﻿using Microsoft.Extensions.Options;
+using Shortly.Codes.Application;
 using Shortly.Codes.Application.DTOs;
 using Shortly.Codes.Application.Enums;
 using Shortly.Codes.Application.Exceptions;
+using Shortly.Codes.Application.Utils;
 using Shortly.Codes.BLL.Abstractions;
 using Shortly.Codes.BLL.Abstractions.Requests;
 using Shortly.Codes.DAL.Abstractions;
@@ -12,10 +14,12 @@ namespace Shortly.Codes.BLL.Implementation;
 public class CodeManager : ICodeManager, ICodeProvider
 {
     private readonly ICodeStorage _codeStorage;
+    private readonly CodesOptions _codesOptions;
 
-    public CodeManager(ICodeStorage codeStorage)
+    public CodeManager(ICodeStorage codeStorage, IOptions<CodesOptions> options)
     {
         _codeStorage = codeStorage;
+        _codesOptions = options.Value;
     }
 
     public async Task<CodeDTO> CreateAccountConfirmation(string email, CancellationToken cancellationToken)
@@ -24,11 +28,11 @@ public class CodeManager : ICodeManager, ICodeProvider
             cancellationToken);
 
         if (code != null)
-            throw new CodeAlreadyExists(CodeAlreadyExists.MESSAGE);
+            throw new CodeAlreadyExistsException(CodeAlreadyExistsException.MESSAGE);
 
-        var expiredDate = DateTime.UtcNow.AddMinutes(CodesConstants.ConfirmationTTL);
-
-        return await _codeStorage.Create(new StorageCreateCodeRequest(email, CodeType.Confirmation, expiredDate),
+        return await _codeStorage.Create(
+            new StorageCreateCodeRequest(email, CodeGenerator.Generate(), CodeType.Confirmation,
+                DateTime.UtcNow.AddMinutes(_codesOptions.ConfirmationTTLInMinutes)),
             cancellationToken);
     }
 
@@ -39,11 +43,11 @@ public class CodeManager : ICodeManager, ICodeProvider
             cancellationToken);
 
         if (code != null)
-            throw new CodeAlreadyExists(CodeAlreadyExists.MESSAGE);
+            throw new CodeAlreadyExistsException(CodeAlreadyExistsException.MESSAGE);
 
-        var expiredDate = DateTime.UtcNow.AddMinutes(CodesConstants.PasswordRecoveryTTL);
-
-        return await _codeStorage.Create(new StorageCreateCodeRequest(email, CodeType.PasswordRecovery, expiredDate),
+        return await _codeStorage.Create(
+            new StorageCreateCodeRequest(email, CodeGenerator.Generate(), CodeType.PasswordRecovery,
+                DateTime.UtcNow.AddMinutes(_codesOptions.PasswordRecoveryTTLInMinutes)),
             cancellationToken);
     }
 
