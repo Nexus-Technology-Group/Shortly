@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Shortly.Authorization.Application\Shortly.Authorization.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.2.5" />
+    </ItemGroup>
+
 </Project>

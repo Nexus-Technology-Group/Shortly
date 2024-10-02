@@ -9,9 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
@@ -22,10 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Shortly.Link.BLL.Abstractions\Shortly.Link.BLL.Abstractions.csproj" />
-      <ProjectReference Include="..\Shortly.Link.BLL.Implementation\Shortly.Link.BLL.Implementation.csproj" />
-      <ProjectReference Include="..\Shortly.Link.DAL.Abstractions\Shortly.Link.DAL.Abstractions.csproj" />
-      <ProjectReference Include="..\Shortly.Link.DAL.Mongo\Shortly.Link.DAL.Mongo.csproj" />
+      <ProjectReference Include="..\Shortly.Authorization.BLL.Abstractions\Shortly.Authorization.BLL.Abstractions.csproj" />
+      <ProjectReference Include="..\Shortly.Authorization.BLL.Implementation\Shortly.Authorization.BLL.Implementation.csproj" />
+      <ProjectReference Include="..\Shortly.Authorization.DAL.Abstractions\Shortly.Authorization.DAL.Abstractions.csproj" />
+      <ProjectReference Include="..\Shortly.Authorization.DAL.PostgreSQL\Shortly.Authorization.DAL.PostgreSQL.csproj" />
     </ItemGroup>
 
 </Project>
